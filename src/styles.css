@@ -60,6 +60,10 @@ select:focus, input:focus { border-color: #6875f5; box-shadow: 0 0 0 3px #5563e8
 .capture-toolbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 9px; }
 .quick-action { width: 100%; min-width: 0; min-height: 36px; }
 .quick-action.active { border-color: #6670ff; background: #1b2450; color: #eef0ff; }
+.fit-bar { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.fit-bar .fit-label { flex: 0 0 auto; color: #657493; font-size: 8.5px; font-weight: 800; letter-spacing: .9px; text-transform: uppercase; }
+.fit-bar .fit-options { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.fit-bar .quick-action { min-height: 30px; font-size: 10px; }
 
 .settings-card { min-height: 0; height: 100%; padding: 12px; overflow: hidden; }
 .settings-heading { height: 24px; display: flex; align-items: center; gap: 7px; margin-bottom: 9px; color: #8c97ff; }

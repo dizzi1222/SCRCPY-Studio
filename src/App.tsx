@@ -724,6 +724,29 @@ function App() {
               </div>
             )}
 
+            {mode !== "camera" && activeConfig && (
+              <div className="fit-bar">
+                <span className="fit-label">Screen fit</span>
+                <div className="fit-options" role="group" aria-label="Screen fit">
+                  {([
+                    { value: "stretched", label: "Fill", title: "Fill window by stretching (no black bars)" },
+                    { value: "letterbox", label: "Fit", title: "Show whole phone screen with black bars" },
+                    { value: "unscaled", label: "1:1", title: "Pixel-perfect, no scaling" }
+                  ] as const).map((option) => (
+                    <button
+                      key={option.value}
+                      className={(activeConfig.renderFit ?? "stretched") === option.value ? "secondary quick-action active" : "secondary quick-action"}
+                      onClick={() => changeConfig({ ...activeConfig, renderFit: option.value })}
+                      disabled={launching}
+                      title={option.title}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="workspace-body">
               {mode === "camera" && activeConfig?.mode === "camera" && selectedSerial && (
                 <CameraControls serial={selectedSerial} config={activeConfig} onChange={changeConfig} onStatus={setStatusText} onCapabilitiesChange={setCameraCapabilities} />

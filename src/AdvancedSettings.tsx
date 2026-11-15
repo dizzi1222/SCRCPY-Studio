@@ -250,7 +250,7 @@ export default function AdvancedSettings({
           </Field>
           <Field label="Window fit">
             <select value={config.renderFit ?? "stretched"} onChange={(event) => update({ renderFit: event.target.value as "letterbox" | "stretched" | "unscaled" })}>
-              <option value="stretched">Fill window (no black bars)</option>
+              <option value="stretched">Fill window (stretch, no black bars)</option>
               <option value="letterbox">Preserve aspect (black bars)</option>
               <option value="unscaled">Unscaled (1:1)</option>
             </select>

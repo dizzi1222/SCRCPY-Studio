@@ -2,10 +2,10 @@ use crate::{
     commands::hidden_command,
     creator::recordings_root,
     desktop::launch_desktop_and_watch,
-    devices::list_devices,
+    devices::{adb_shell, list_devices},
     models::{DesktopDiagnostics, LaunchConfig, LaunchResult, SessionStatus},
     preferences::remember_successful_profile,
-    runtime::{adb_path, scrcpy_path},
+    runtime::{scrcpy_path},
 };
 use chrono::Local;
 use std::{
@@ -165,24 +165,6 @@ mod native_window {
     }
     pub(super) fn press_mod_key(_serial: &str, _key: char, _shift: bool) -> Result<(), String> {
         Err("Live window controls are currently available on Windows only.".into())
-    }
-}
-
-fn adb_shell(serial: &str, args: &[&str]) -> Result<String, String> {
-    let adb = adb_path()?;
-    let output = crate::commands::hidden_command(adb)
-        .arg("-s")
-        .arg(serial)
-        .arg("shell")
-        .args(args)
-        .output()
-        .map_err(|error| error.to_string())?;
-    let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
-    let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
-    if output.status.success() {
-        Ok(if stdout.is_empty() { stderr } else { stdout })
-    } else {
-        Err(if stderr.is_empty() { stdout } else { stderr })
     }
 }
 
