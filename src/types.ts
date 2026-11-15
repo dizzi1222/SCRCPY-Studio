@@ -72,6 +72,7 @@ export interface LaunchConfig {
   fullscreen: boolean;
   captureOrientation?: "auto" | "initial" | "0" | "90" | "180" | "270" | null;
   crop?: string | null;
+  renderFit?: "letterbox" | "stretched" | "unscaled" | null;
   cameraId?: string | null;
   cameraFacing?: "front" | "back" | "external" | null;
   cameraZoom?: number | null;

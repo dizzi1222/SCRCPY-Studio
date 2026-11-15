@@ -39,7 +39,7 @@ import type {
 const configKeys: Array<keyof LaunchConfig> = [
   "serial", "mode", "maxSize", "maxFps", "codec", "videoBitRate", "videoEncoder",
   "audio", "audioSource", "stayAwake", "turnScreenOff", "showTouches", "record",
-  "fullscreen", "captureOrientation", "crop", "cameraId", "cameraFacing", "cameraZoom",
+  "fullscreen", "captureOrientation", "crop", "renderFit", "cameraId", "cameraFacing", "cameraZoom",
   "cameraTorch", "cameraSize", "cameraAspectRatio", "cameraHighSpeed", "desktopWidth",
   "desktopHeight", "desktopDensity", "desktopFlex", "desktopNoDecorations",
   "desktopKeepContent", "desktopStartApp", "desktopEnvironment", "desktopDisplayId"
@@ -250,6 +250,7 @@ function App() {
           fullscreen: false,
           captureOrientation: "auto",
           crop: null,
+          renderFit: "stretched",
           cameraId: null,
           cameraFacing: null,
           cameraZoom: null,
@@ -595,6 +596,7 @@ function App() {
       fullscreen: false,
       captureOrientation: "auto",
       crop: null,
+      renderFit: "stretched",
       cameraId: recommendedCamera?.id ?? null,
       cameraFacing: recommendedCamera && ["front", "back", "external"].includes(recommendedCamera.facing)
         ? recommendedCamera.facing as "front" | "back" | "external"

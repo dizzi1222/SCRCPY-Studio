@@ -309,6 +309,12 @@ fn safe_crop(value: Option<&str>) -> Option<&str> {
     })
 }
 
+fn safe_render_fit(value: Option<&str>) -> Option<&str> {
+    value
+        .map(str::trim)
+        .filter(|value| matches!(*value, "letterbox" | "stretched" | "unscaled"))
+}
+
 fn capture_orientation_arg(value: Option<&str>) -> Option<String> {
     match value {
         Some("initial") => Some("--capture-orientation=@".into()),
@@ -461,6 +467,9 @@ fn build_args(config: &LaunchConfig, recording: Option<&Path>) -> Vec<String> {
     }
     if let Some(crop) = safe_crop(config.crop.as_deref()) {
         args.push(format!("--crop={crop}"));
+    }
+    if let Some(render_fit) = safe_render_fit(config.render_fit.as_deref()) {
+        args.push(format!("--render-fit={render_fit}"));
     }
     if let Some(path) = recording {
         args.push(format!("--record={}", path.display()));
@@ -871,6 +880,7 @@ mod tests {
             fullscreen: false,
             capture_orientation: None,
             crop: None,
+            render_fit: None,
             camera_id: None,
             camera_facing: None,
             camera_zoom: None,
@@ -932,6 +942,18 @@ mod tests {
         assert!(args.contains(&"--video-encoder=c2.android.av1.encoder".to_string()));
         assert!(args.contains(&"--capture-orientation=@90".to_string()));
         assert!(args.contains(&"--crop=1080:1920:0:0".to_string()));
+    }
+
+    #[test]
+    fn render_fit_is_forwarded_and_invalid_values_are_ignored() {
+        let mut config = sample_config("mirror");
+        config.render_fit = Some("stretched".into());
+        let args = build_args(&config, None);
+        assert!(args.contains(&"--render-fit=stretched".to_string()));
+
+        config.render_fit = Some("stretch".into());
+        let args = build_args(&config, None);
+        assert!(!args.iter().any(|arg| arg.starts_with("--render-fit=")));
     }
 
     #[test]
