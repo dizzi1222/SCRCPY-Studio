@@ -39,7 +39,7 @@ import type {
 const configKeys: Array<keyof LaunchConfig> = [
   "serial", "mode", "maxSize", "maxFps", "codec", "videoBitRate", "videoEncoder",
   "audio", "audioSource", "stayAwake", "turnScreenOff", "showTouches", "record",
-  "fullscreen", "captureOrientation", "crop", "cameraId", "cameraFacing", "cameraZoom",
+  "fullscreen", "captureOrientation", "crop", "renderFit", "cameraId", "cameraFacing", "cameraZoom",
   "cameraTorch", "cameraSize", "cameraAspectRatio", "cameraHighSpeed", "desktopWidth",
   "desktopHeight", "desktopDensity", "desktopFlex", "desktopNoDecorations",
   "desktopKeepContent", "desktopStartApp", "desktopEnvironment", "desktopDisplayId"
@@ -250,6 +250,7 @@ function App() {
           fullscreen: false,
           captureOrientation: "auto",
           crop: null,
+          renderFit: "stretched",
           cameraId: null,
           cameraFacing: null,
           cameraZoom: null,
@@ -595,6 +596,7 @@ function App() {
       fullscreen: false,
       captureOrientation: "auto",
       crop: null,
+      renderFit: "stretched",
       cameraId: recommendedCamera?.id ?? null,
       cameraFacing: recommendedCamera && ["front", "back", "external"].includes(recommendedCamera.facing)
         ? recommendedCamera.facing as "front" | "back" | "external"
@@ -719,6 +721,29 @@ function App() {
                 <button className="secondary quick-action" onClick={() => void openMediaFolder()} disabled={creatorBusy} title="Open recordings and screenshots">
                   <FolderOpen size={16} /> Media Folder
                 </button>
+              </div>
+            )}
+
+            {mode !== "camera" && activeConfig && (
+              <div className="fit-bar">
+                <span className="fit-label">Screen fit</span>
+                <div className="fit-options" role="group" aria-label="Screen fit">
+                  {([
+                    { value: "stretched", label: "Fill", title: "Fill window by stretching (no black bars)" },
+                    { value: "letterbox", label: "Fit", title: "Show whole phone screen with black bars" },
+                    { value: "unscaled", label: "1:1", title: "Pixel-perfect, no scaling" }
+                  ] as const).map((option) => (
+                    <button
+                      key={option.value}
+                      className={(activeConfig.renderFit ?? "stretched") === option.value ? "secondary quick-action active" : "secondary quick-action"}
+                      onClick={() => changeConfig({ ...activeConfig, renderFit: option.value })}
+                      disabled={launching}
+                      title={option.title}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 

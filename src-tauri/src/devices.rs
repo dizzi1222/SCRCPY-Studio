@@ -53,7 +53,7 @@ pub(crate) fn list_devices() -> Result<Vec<DeviceInfo>, String> {
     Ok(parse_devices(&raw))
 }
 
-fn adb_shell(serial: &str, args: &[&str]) -> Result<String, String> {
+pub(crate) fn adb_shell(serial: &str, args: &[&str]) -> Result<String, String> {
     let adb = adb_path()?;
     let mut command = hidden_command(adb);
     command.arg("-s").arg(serial).arg("shell").args(args);
@@ -71,7 +71,7 @@ fn parse_u32(value: &str) -> u32 {
     value.trim().parse::<u32>().unwrap_or(0)
 }
 
-fn parse_physical_size(raw: &str) -> (Option<u32>, Option<u32>) {
+pub(crate) fn parse_physical_size(raw: &str) -> (Option<u32>, Option<u32>) {
     let candidate = raw
         .lines()
         .find(|line| line.to_ascii_lowercase().contains("physical size"))

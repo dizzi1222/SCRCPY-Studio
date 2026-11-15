@@ -89,6 +89,8 @@ pub(crate) struct LaunchConfig {
     #[serde(default)]
     pub(crate) crop: Option<String>,
     #[serde(default)]
+    pub(crate) render_fit: Option<String>,
+    #[serde(default)]
     pub(crate) camera_id: Option<String>,
     #[serde(default)]
     pub(crate) camera_facing: Option<String>,

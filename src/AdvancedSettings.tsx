@@ -248,6 +248,13 @@ export default function AdvancedSettings({
           <Field label="Crop (width:height:x:y)">
             <input value={config.crop ?? ""} onChange={(event) => update({ crop: event.target.value || null })} placeholder="Optional" inputMode="numeric" />
           </Field>
+          <Field label="Window fit">
+            <select value={config.renderFit ?? "stretched"} onChange={(event) => update({ renderFit: event.target.value as "letterbox" | "stretched" | "unscaled" })}>
+              <option value="stretched">Fill window (stretch, no black bars)</option>
+              <option value="letterbox">Preserve aspect (black bars)</option>
+              <option value="unscaled">Unscaled (1:1)</option>
+            </select>
+          </Field>
           {mode === "desktop" && (
             <Field label="Start app package">
               <input value={config.desktopStartApp ?? ""} onChange={(event) => update({ desktopStartApp: event.target.value || null })} placeholder="Optional" />
